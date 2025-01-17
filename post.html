@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帖子详情 - PluckyPioneer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6200ee, #3700b3);
+            color: #333;
+            min-height: 100vh;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            color: #6200ee;
+            font-size: 2.5rem;
+        }
+        header p {
+            margin: 0.5rem 0 0;
+            color: #666;
+            font-size: 1.1rem;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: #6200ee;
+            margin: 0 1.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #3700b3;
+        }
+        .container {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .post-detail {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative; /* 为返回按钮定位 */
+        }
+        .post-detail h2 {
+            margin-top: 0;
+            color: #6200ee;
+            font-size: 2rem;
+        }
+        .post-detail p {
+            margin: 0.5rem 0;
+            color: #666;
+            line-height: 1.6;
+        }
+        .post-detail .meta {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        .comment-form {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.75rem 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .comment-form textarea:focus {
+            border-color: #6200ee;
+            outline: none;
+        }
+        .comment-form button {
+            background-color: #6200ee;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .comment-form button:hover {
+            background-color: #3700b3;
+        }
+        .comment-list {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .comment-item {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            position: relative; /* 为删除按钮定位 */
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        .comment-item p {
+            margin: 0.5rem 0;
+            color: #666;
+            line-height: 1.6;
+        }
+        .comment-item .meta {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        .comment-item .delete-comment-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+        .comment-item .delete-comment-btn:hover {
+            background-color: #cc0000;
+        }
+        footer {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #666;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        }
+        footer p {
+            margin: 0;
+        }
+        .back-button {
+            background-color: #6200ee;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: absolute; /* 绝对定位 */
+            top: 1.5rem; /* 距离顶部 */
+            right: 1.5rem; /* 距离右侧 */
+        }
+        .back-button:hover {
+            background-color: #3700b3;
+        }
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-left: 1rem;
+        }
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <h1>
+            <img src="logo.png" alt="网站Logo" width="40" height="40" style="vertical-align: middle; margin-right: 10px;">
+            PluckyPioneer
+        </h1>
+        <p>分享你的机会，一起走向世界</p>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav>
+        <a href="index.html">主页</a>
+        <a href="index.html#post">发帖</a>
+        <a href="favorites.html">收藏</a> 
+        <a href="login.html" id="loginLink">登录/注册</a>
+    </nav>
+
+    <!-- 帖子详情 -->
+    <div class="post-detail" id="postDetail">
+        <button class="back-button" onclick="window.history.back()">返回</button>
+        <h2>帖子详情</h2>
+        <p>加载中...</p>
+        <button id="favoriteBtn">收藏</button>
+        <button id="deleteBtn" class="delete-button" style="display: none;">删除帖子</button>
+    </div>
+
+    <!-- 评论表单 -->
+    <div class="comment-form">
+        <h3>发表评论</h3>
+        <form id="commentForm">
+            <textarea id="commentContent" rows="5" placeholder="请输入评论内容" required></textarea>
+            <button type="submit">提交评论</button>
+        </form>
+    </div>
+
+    <!-- 评论列表 -->
+    <div class="comment-list" id="commentList">
+        <h3>评论</h3>
+        <!-- 评论会动态加载到这里 -->
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>&copy; 2023 PluckyPioneer. All rights reserved.</p>
+        <p>Contact us: <a href="mailto:your-email@example.com">PluckyPioneer258@proton.me</a></p>
+    </footer>
+
+    <script>
+        // 获取当前登录用户
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        const loginLink = document.getElementById('loginLink');
+
+        if (loggedInUser) {
+            // 用户已登录，显示欢迎信息
+            loginLink.textContent = `欢迎，${loggedInUser}`;
+            loginLink.href = "profile.html";
+        } else {
+            // 用户未登录，跳转到登录页面
+            window.location.href = 'login.html';
+        }
+
+        // 获取 URL 中的帖子 ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // 获取帖子数据
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+        // 根据帖子 ID 加载帖子内容
+        const postDetail = document.getElementById('postDetail');
+        const deleteBtn = document.getElementById('deleteBtn');
+        if (postId) {
+            const post = posts.find(p => p.id === parseInt(postId));
+            if (post) {
+                postDetail.innerHTML = `
+                    <button class="back-button" onclick="window.history.back()">返回</button>
+                    <h2>${post.title}</h2>
+                    <p>${post.content}</p>
+                    <p class="meta"><strong>发布者:</strong> ${post.author} | <strong>发布时间:</strong> ${post.date} | <strong>类型:</strong> ${post.type}</p>
+                    <button id="favoriteBtn">收藏</button>
+                `;
+
+                // 如果当前用户是帖子的发布者，显示删除按钮
+                if (loggedInUser === post.author) {
+                    deleteBtn.style.display = 'inline-block';
+                }
+            } else {
+                postDetail.innerHTML = `<p>帖子未找到。</p>`;
+            }
+        } else {
+            postDetail.innerHTML = `<p>帖子 ID 无效。</p>`;
+        }
+
+        // 收藏功能
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        if (favoriteBtn) {
+            favoriteBtn.addEventListener('click', function () {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                if (!loggedInUser) {
+                    alert('请先登录！');
+                    return;
+                }
+
+                let favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+                if (!favorites[loggedInUser]) {
+                    favorites[loggedInUser] = [];
+                }
+
+                if (!favorites[loggedInUser].includes(postId)) {
+                    favorites[loggedInUser].push(postId);
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    alert('帖子已收藏！');
+                } else {
+                    alert('帖子已存在于收藏列表中！');
+                }
+            });
+        }
+
+        // 删除帖子功能
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', function () {
+                if (confirm('确定要删除这个帖子吗？')) {
+                    const updatedPosts = posts.filter(p => p.id !== parseInt(postId));
+                    localStorage.setItem('posts', JSON.stringify(updatedPosts));
+                    alert('帖子已删除！');
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        // 评论数据（模拟存储）
+        let comments = JSON.parse(localStorage.getItem('comments')) || {};
+
+        // 渲染评论
+        function renderComments() {
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = '<h3>评论</h3>'; // 清空当前内容
+
+            if (comments[postId]) {
+                comments[postId].forEach((comment, index) => {
+                    const commentItem = document.createElement('div');
+                    commentItem.className = 'comment-item';
+                    commentItem.innerHTML = `
+                        <p><strong>${comment.author}:</strong> ${comment.content}</p>
+                        <p class="meta">${comment.date}</p>
+                    `;
+
+                    // 如果当前用户是评论的作者，显示删除按钮
+                    if (loggedInUser === comment.author) {
+                        const deleteCommentBtn = document.createElement('button');
+                        deleteCommentBtn.className = 'delete-comment-btn';
+                        deleteCommentBtn.textContent = '删除';
+                        deleteCommentBtn.onclick = function () {
+                            deleteComment(index);
+                        };
+                        commentItem.appendChild(deleteCommentBtn);
+                    }
+
+                    commentList.appendChild(commentItem);
+                });
+            } else {
+                commentList.innerHTML += '<p>暂无评论。</p>';
+            }
+        }
+
+        // 删除评论功能
+        function deleteComment(index) {
+            if (confirm('确定要删除这条评论吗？')) {
+                comments[postId].splice(index, 1); // 从评论数组中删除该评论
+                localStorage.setItem('comments', JSON.stringify(comments)); // 更新本地存储
+                renderComments(); // 重新渲染评论列表
+            }
+        }
+
+        // 处理评论表单提交
+        document.getElementById('commentForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (!loggedInUser) {
+                alert('请先登录！');
+                return;
+            }
+
+            // 获取评论内容
+            const content = document.getElementById('commentContent').value;
+            const date = new Date().toLocaleString();
+
+            // 创建新评论
+            const newComment = {
+                author: loggedInUser,
+                content: content,
+                date: date
+            };
+
+            // 将新评论添加到评论列表
+            if (!comments[postId]) {
+                comments[postId] = [];
+            }
+            comments[postId].push(newComment);
+            localStorage.setItem('comments', JSON.stringify(comments));
+
+            // 清空表单并重新渲染评论
+            document.getElementById('commentForm').reset();
+            renderComments();
+        });
+
+        // 初始化：渲染评论
+        renderComments();
+    </script>
+</body>
+</html>
