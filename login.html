@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - PluckyPioneer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6200ee, #3700b3);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 2.5rem;
+            width: 350px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .login-container h2 {
+            margin-top: 0;
+            color: #6200ee;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.75rem 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .login-container input:focus {
+            border-color: #6200ee;
+            outline: none;
+        }
+        .login-container button {
+            background-color: #6200ee;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .login-container button:hover {
+            background-color: #3700b3;
+        }
+        .login-container a {
+            color: #6200ee;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .login-container a:hover {
+            color: #3700b3;
+        }
+        .login-container p {
+            margin: 1rem 0 0;
+            color: #666;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>登录</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="用户名" required>
+            <input type="password" id="password" placeholder="密码" required>
+            <button type="submit">登录</button>
+        </form>
+        <p>还没有账号？<a href="register.html">注册</a></p>
+    </div>
+
+    <script>
+        // 获取用户数据
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // 处理登录表单提交
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            // 获取表单数据
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // 检查用户是否存在
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                // 登录成功，保存用户状态
+                localStorage.setItem('loggedInUser', username);
+                alert('登录成功！');
+                window.location.href = 'index.html'; // 跳转到主页
+            } else {
+                alert('用户名或密码错误！');
+            }
+        });
+    </script>
+</body>
+</html>
