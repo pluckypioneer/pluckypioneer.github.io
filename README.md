@@ -2,7 +2,7 @@
 
 ## Introduce
 
-**这是一个用于知识分享网站的前端界面设计。**\
+**这是一个用于知识分享网站的前端界面设计。**
 
 **网址: [click there](https://pluckypioneer.github.io/)**
 
